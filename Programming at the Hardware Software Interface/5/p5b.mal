@@ -1,0 +1,325 @@
+#Jacky Li
+
+	.data
+
+prompt:	.asciiz "Enter a line of text (limit = 80 characters including newline).\n"
+onlyWhite:	.asciiz "\nLine contains only white space characters."
+numWhite:	.asciiz "\nNumber of non-whitespace characters: "
+numWords:	.asciiz "\nNumber of words: "
+maxLength:	.asciiz "\nMaximum length of a word: "
+minLength:	.asciiz "\nMinimum length of a word: "
+maxWord:	.asciiz "\nWord of maximum length: "
+minWord:	.asciiz "\nWord of minimum length: "
+
+# Set aside 81 bytes for user's text so that it is guaranteed to end with a null byte.
+buf:	.space 81
+
+	.text
+	
+
+main:
+	# First, get line of text from user.
+	jal	getText		# Text is stored in buffer space buf
+	
+	# Make sure the entered text is not all white space characters.
+	# This function will print a message and exit if text is all white space.
+	jal	checkAllWhitespace
+	
+	# Next calculate number of non-whitespace characters.
+	jal	numNotWhitespace	# $v0 = number of non-whitespace characters
+	move	$s0, $v0		# $s0 = number of non-whitespace characters
+	
+	# Print first result.
+	la	$a0, numWhite	# $a0 = address of string about first result
+	li	$v0, 4		# 4 = syscall code to print string
+	syscall			# Print string about first result
+	move	$a0, $s0	# $a0 = number of non-whitespace characters
+	li	$v0, 1		# 1 = syscall code to print int
+	syscall			# Print first result.
+	
+	# Now calculate number of words in the line.
+	jal	getNumWords	# $v0 = number of words in line
+	move	$s0, $v0	# $s0 = number of words in line
+	
+	# Print second result.
+	la	$a0, numWords	# $a0 = address of string about second result
+	li	$v0, 4		# 4 = syscall code to print string
+	syscall			# Print string about second result
+	move	$a0, $s0	# $a0 = number of words
+	li	$v0, 1		# 1 = syscall code to print int
+	syscall			# Print second result.
+	
+	# Now find longest word's length.
+	jal	getMaxLength	# $v0 = longest word's length
+	move	$s0, $v0	# $s0 = longest word's length
+	move	$s1, $v1	# $s1 = longest word's address
+	
+	# Print third result.
+	la	$a0, maxLength	# $a0 = address of string about third result
+	li	$v0, 4		# 4 = syscall code to print string
+	syscall			# Print string about third result
+	move	$a0, $s0	# $a0 = longest word's length
+	li	$v0, 1		# 1 = syscall code to print int
+	syscall			# Print third result.
+	
+	# Now find shortest word's length.
+	jal	getMinLength	# $v0 = shortest word's length
+	move	$s2, $v0	# $s2 = shortest word's length
+	move	$s3, $v1	# $s3 = shortest word's address
+	
+	# Print fourth result.
+	la	$a0, minLength	# $a0 = address of string about fourth result
+	li	$v0, 4		# 4 = syscall code to print string
+	syscall			# Print string about fourth result
+	move	$a0, $s2	# $a0 = shortest word's length
+	li	$v0, 1		# 1 = syscall code to print int
+	syscall			# Print fourth result.
+	
+	# Already have lengths and addresses of max and min words. Use printString to print them.
+	
+	# Print longest word
+	la	$a0, maxWord	# $a0 = address of string about fifth result
+	li	$v0, 4		# 4 = syscall code to print string
+	syscall			# Print string about fourth result
+	move	$a0, $s1	# $a0 = address of longest word
+	move	$a1, $s0	# $a1 = length of longest word
+	jal	printString	# Print $a1 chars starting at address $a0 (longest word)
+	
+	# Print shortest word
+	la	$a0, minWord	# $a0 = address of string about sixth result
+	li	$v0, 4		# 4 = syscall code to print string
+	syscall			# Print string about sixth result
+	move	$a0, $s3	# $a0 = address of shortest word
+	move	$a1, $s2	# $a1 = length of shortest word
+	jal	printString	# Print $a1 chars starting at address $a0 (shortest word)
+	
+	# Exit cleanly
+	j	exit
+	
+	
+	
+getText: # Prompts for and reads in a line of text no more than 80 characters long.
+	la	$a0, prompt	# $a0 = prompt address
+	li	$v0, 4		# 4 = syscall code to print string
+	syscall			# Print prompt for text		
+	
+	la	$a0, buf	# Buffer space in which to put user's input
+	li	$a1, 81		# Amount of available space (last byte reserved for null byte)	
+	li	$v0, 8		# 8 = syscall code to read string	
+	syscall			# Store user's input into buffer
+	
+	jr	$ra		# Return
+	
+checkAllWhitespace:	# If string in buf is all white space chars, prints message saying so
+			# and exits. Otherwise returns to calling function.
+	la	$t0, buf	# $t0 = buffer address
+	addi	$t0, $t0, -1	# $t0 = buffer address - 1
+	
+	checkAllWhitespace_loop:
+		addi	$t0, $t0, 1	# $t0 = address of next character
+		lb	$t1, 0($t0)	# Load next byte from buffer
+		beqz	$t1, checkAllWhitespace_endLoop	# If we've hit a null byte, end loop
+		
+		# If the loaded char is a space, new line, or tab, loop.
+		beq	$t1, 0x20, checkAllWhitespace_loop	# space
+		beq	$t1, 0x0a, checkAllWhitespace_loop	# newline
+		beq	$t1, 0x09, checkAllWhitespace_loop	# tab
+		
+		# Otherwise, return.
+		jr	$ra
+		
+	checkAllWhitespace_endLoop:
+	# Get here if all chars were whitespace. Print message saying so, then exit.
+	la	$a0, onlyWhite	# $a0 = address of all whitespace message
+	li	$v0, 4		# 4 = syscall code to print string
+	syscall			# Print all whitespace message
+	j	exit		# Exit
+
+numNotWhitespace:	# Returns number of non-whitespace characters in buffer.
+	
+	la	$t0, buf	# $t0 = buffer address
+	addi	$t0, $t0, -1	# $t0 = buffer address - 1
+	li	$v0, 0		# $v0 = number of non-whitespace chars found so far
+	
+	numNotWhitespace_loop:
+		addi	$t0, $t0, 1	# $t0 = address of next character
+		lb	$t1, 0($t0)	# Load next byte from buffer
+		beqz	$t1, return	# If we've hit a null byte, return
+		
+		# If the loaded char is a space, new line, or tab, loop.
+		beq	$t1, 0x20, numNotWhitespace_loop	# space
+		beq	$t1, 0x0a, numNotWhitespace_loop	# newline
+		beq	$t1, 0x09, numNotWhitespace_loop	# tab
+		
+		# Otherwise add 1 to $v0, then loop.
+		addi	$v0, $v0, 1
+		j numNotWhitespace_loop
+
+getNumWords:	# Returns number of words (runs of characters without whitespace) in buffer.
+
+	la	$t0, buf	# $t0 = buffer address
+	addi	$t0, $t0, -1	# $t0 = buffer address - 1
+	li	$t2, 0		# $t2 = 1 if previous char wasn't whitespace, else 0
+	li	$v0, 0		# $v0 = number of words found so far
+	
+	getNumWords_loop:
+		addi	$t0, $t0, 1	# $t0 = address of next character
+		lb	$t1, 0($t0)	# Load next byte from buffer
+		beqz	$t1, getNumWords_end	# If we've hit a null byte, break loop.
+		
+		# If the loaded char is a space, new line, or tab, jump to white.
+		beq	$t1, 0x20, getNumWords_white	# space
+		beq	$t1, 0x0a, getNumWords_white	# newline
+		beq	$t1, 0x09, getNumWords_white	# tab
+		
+		# If we get here then we have a non-whitespace character.
+		# Set $t2 to 1, then loop.
+		li	$t2, 1
+		j getNumWords_loop
+		
+		getNumWords_white:
+		# We've hit whitespace. If $t2 is 0, it doesn't matter; loop.
+		beqz	$t2, getNumWords_loop
+		
+		# Otherwise add 1 to $v0, then set $t2 to 0. Then loop.
+		addi	$v0, $v0, 1
+		li	$t2, 0
+		j getNumWords_loop
+
+	getNumWords_end:
+	# If $t2 is 0, all words are already counted in $v0.
+	beqz	$t2, return
+	
+	# If $t2 isn't 0, that means string ends with a word, so add 1 more to $v0.
+	addi	$v0, $v0, 1	# Increment $v0
+	jr	$ra		# Return
+
+getMaxLength:	# Returns $v0 = length of longest word and $v1 = address at which it begins.
+	# This function will not work if the buffer is empty or all whitespace.
+
+	la	$t0, buf	# $t0 = buffer address
+	addi	$t0, $t0, -1	# $t0 = buffer address - 1
+	li	$t2, 0		# $t2 = length of word we're currently in (0 if prev char was whitespace)
+	li	$v0, 0		# $v0 = length of longest word so far
+	
+	getMaxLength_loop:
+		addi	$t0, $t0, 1	# $t0 = address of next character
+		lb	$t1, 0($t0)	# Load next byte from buffer
+		beqz	$t1, getMaxLength_end	# If we've hit a null byte, break loop.
+		
+		# If the loaded char is a space, new line, or tab, jump to white.
+		beq	$t1, 0x20, getMaxLength_white	# space
+		beq	$t1, 0x0a, getMaxLength_white	# newline
+		beq	$t1, 0x09, getMaxLength_white	# tab
+		
+		# If we get here then we have a non-whitespace character. Increment $t2.
+		addi	$t2, $t2, 1
+		
+		# If we didn't just start a word, then $t2 > 1. In that case loop.
+		bne	$t2, 1, getMaxLength_loop
+		
+		# Get here if we just started a word. Set $t3 to current address, then loop.
+		move	$t3, $t0
+		j getMaxLength_loop
+		
+		getMaxLength_white:
+		# We've hit whitespace. If $t2 is 0, it doesn't matter; loop.
+		beqz	$t2, getMaxLength_loop
+		
+		# Otherwise check if $t2 (length of word that just ended) is more than $v0.
+		blt	$t2, $v0, getMaxLength_endWhite	# If $v0 is greater, loop.
+		
+		# If $v0 isn't greater, set $v0 = $t2 and $v1 = $t3 (address of start of word).
+		move	$v0, $t2
+		move	$v1, $t3
+		
+		getMaxLength_endWhite:
+		li	$t2, 0		# After a white space, reset $t2 to 0,
+		j getMaxLength_loop	# then loop.
+
+	getMaxLength_end:
+	# If $t2 is 0, all words have already been checked.
+	beqz	$t2, return
+	
+	# If $t2 isn't 0, that means string ends with a word, so check last word's length.
+	blt	$t2, $v0, return	# If $v0 > $t2, return
+	move	$v0, $t2	# Otherwise set $v0 = $t2,
+	move	$v1, $t3	# $v1 = $t3,
+	jr	$ra		# then return.
+
+getMinLength:	# Returns $v0 = length of shortest word and $v1 = address at which it begins.
+	# This function will not work if the buffer is empty or all whitespace.
+
+	la	$t0, buf	# $t0 = buffer address
+	addi	$t0, $t0, -1	# $t0 = buffer address - 1
+	li	$t2, 0		# $t2 = length of word we're currently in (0 if prev char was whitespace)
+	li	$v0, 81		# $v0 = length of shortest word so far (start it as more than max possible length)
+	
+	getMinLength_loop:
+		addi	$t0, $t0, 1	# $t0 = address of next character
+		lb	$t1, 0($t0)	# Load next byte from buffer
+		beqz	$t1, getMinLength_end	# If we've hit a null byte, break loop.
+		
+		# If the loaded char is a space, new line, or tab, jump to white.
+		beq	$t1, 0x20, getMinLength_white	# space
+		beq	$t1, 0x0a, getMinLength_white	# newline
+		beq	$t1, 0x09, getMinLength_white	# tab
+		
+		# If we get here then we have a non-whitespace character. Increment $t2.
+		addi	$t2, $t2, 1
+		
+		# If we didn't just start a word, then $t2 > 1. In that case loop.
+		bne	$t2, 1, getMinLength_loop
+		
+		# Get here if we just started a word. Set $t3 to current address, then loop.
+		move	$t3, $t0
+		j getMinLength_loop
+		
+		getMinLength_white:
+		# We've hit whitespace. If $t2 is 0 already, it doesn't matter; loop.
+		beqz	$t2, getMinLength_loop
+		
+		# Otherwise check if $t2 (length of word that just ended) is less than $v0.
+		bgt	$t2, $v0, getMinLength_endWhite	# If $v0 is less, go to end of white section.
+		
+		# If $v0 isn't less, set $v0 = $t2 and $v1 = $t3 (address of start of word).
+		move	$v0, $t2
+		move	$v1, $t3
+		
+		getMinLength_endWhite:
+		li	$t2, 0		# After a white space, reset $t2 to 0,
+		j getMinLength_loop	# then loop.
+
+	getMinLength_end:
+	# If $t2 is 0, all words have already been checked.
+	beqz	$t2, return
+	
+	# If $t2 isn't 0, that means string ends with a word, so check last word's length.
+	bgt	$t2, $v0, return	# If $v0 < $t2, return
+	move	$v0, $t2	# Otherwise set $v0 = $t2,
+	move	$v1, $t3	# $v1 = $t3,
+	jr	$ra		# then return.
+
+printString:	# Prints $a1 characters starting at address $a0.
+	
+	move	$t0, $a0	# $t0 = starting address
+	li	$t1, 0		# $t1 = counter for how many chars have been printed
+	
+	printString_loop:
+		beq	$t1, $a1, return	# Return when $a1 chars have been printed
+		
+		lb	$a0, 0($t0)	# $a0 = next char to print
+		li	$v0, 11		# 11 = syscall code to print char
+		syscall			# Print next character
+		
+		addi	$t1, $t1, 1	# Increment counter
+		addi	$t0, $t0, 1	# Increment address
+		j printString_loop	# Loop
+
+			
+return: # Returns to last calling function (jumps to address $ra)
+	jr	$ra
+	
+exit:	# Exits program
+	li	$v0, 10
+	syscall

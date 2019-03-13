@@ -1,0 +1,178 @@
+#Jacky Li
+
+	.data
+	
+prompt:	.asciiz "\nEnter an integer greater than 0: "
+err:	.asciiz "That number was not greater than 0. Please try again."
+left:	.asciiz "Number of 1s in left half of binary representation:  "
+right:	.asciiz "\nNumber of 0s in right half of binary representation: "
+power:	.asciiz "\nHighest power of 2 that evenly divides your integer: "
+digit:	.asciiz "\nSmallest digit in integer's decimal representation:  "
+
+	.text
+	
+#j	main		# Start at main (not really necessary since main is first function listed, but conventional)
+
+main:
+	# First, get positive number from user.
+	jal	getNum		# $v0 = number entered
+	move	$s0, $v0	# $s0 = number entered
+	
+	# Next, get number of 1s in left half of binary representation.
+	move	$a0, $s0	# $a0 = argument = number entered
+	jal	leftHalfOnes	# $v0 = number of 1s in left half of $a0
+	move	$s1, $v0	# $s1 = number of 1s in left half of $a0
+	
+	# Print first result.
+	la	$a0, left	# $a0 = address of string about first result
+	li	$v0, 4		# 4 = syscall code to print string
+	syscall			# Print string about first result
+	move	$a0, $s1	# $a0 = number of 1s in left half of number entered
+	li	$v0, 1		# 1 = syscall code to print int
+	syscall			# Print first result.
+	
+	# Now get number of 0s in right half of binary representation.
+	move	$a0, $s0	# $a0 = argument = number entered
+	jal	rightHalfZeros	# $v0 = number of 0s in right half of $a0
+	move	$s1, $v0	# $s1 = number of 0s in right half of $a0
+	
+	# Print second result.
+	la	$a0, right	# $a0 = address of string about second result
+	li	$v0, 4		# 4 = syscall code to print string
+	syscall			# Print string about second result
+	move	$a0, $s1	# $a0 = number of 0s in right half of number entered
+	li	$v0, 1		# 1 = syscall code to print int
+	syscall			# Print second result.
+	
+	# Now get highest power of 2 that divides the number evenly.
+	move	$a0, $s0	# $a0 = argument = number entered
+	jal	powerOfTwo	# $v0 = highest power of 2 that's a factor of $a0
+	move	$s1, $v0	# $s1 = highest power of 2 that's a factor of $a0
+	
+	# Print third result.
+	la	$a0, power	# $a0 = address of string about third result
+	li	$v0, 4		# 4 = syscall code to print string
+	syscall			# Print string about third result
+	move	$a0, $s1	# $a0 = highest power of 2 that's a factor of number entered
+	li	$v0, 1		# 1 = syscall code to print int
+	syscall			# Print third result.
+	
+	# Finally, get smallest digit in number's decimal representation.
+	move	$a0, $s0	# $a0 = argument = number entered
+	jal	smallestDigit	# $v0 = smallest digit in $a0's decimal representation
+	move	$s1, $v0	# $s1 = smallest digit in $a0's decimal representation
+	
+	# Print fourth result.
+	la	$a0, digit	# $a0 = address of string about fourth result
+	li	$v0, 4		# 4 = syscall code to print string
+	syscall			# Print string about fourth result
+	move	$a0, $s1	# $a0 = smallest digit in decimal representation of number entered
+	li	$v0, 1		# 1 = syscall code to print int
+	syscall			# Print fourth result.
+	
+	# Exit cleanly
+	j	exit
+	
+getNum:	# Gets a positive number (more than 0) from user and returns it
+	
+	la	$a0, prompt	# $a0 = prompt address
+	li	$v0, 4		# 4 = syscall code to print string
+	syscall			# Print prompt for number
+	
+	li	$v0, 5		# 5 = syscall code to read integer
+	syscall			# $v0 = integer entered by user
+	
+	bgtz	$v0, return	# If integer entered > 0, return
+	
+	# Otherwise, print error message have user try again.
+	la	$a0, err	# $a0 = bad input error message address
+	li	$v0, 4		# 4 = syscall code to print string
+	syscall			# Print prompt for number
+	
+	j	getNum		# Get new number
+	
+
+leftHalfOnes: # Returns the number of 1s in the left half of argument $a0.
+	
+	srl	$t0, $a0, 16	# $t0 = $a0 shifted right by 16
+				# (now $t0 contains all the 1s we want to count)
+	li	$t1, 0		# $t1 = counter for looping through right 16 digits of $t0
+	li	$v0, 0		# $v0 = number of 1s counted so far
+	
+	leftHalfOnes_loop:	# Loops through right 16 digits of $t0,
+				# which match the left 16 digits of $a0.
+				# For each digit, increments $v0 if it's 1.
+		beq	$t1, 16, return	# Return when counter reaches 16
+		
+		andi	$t3, $t0, 1	# $t3 = last (binary) digit of $t0
+		add	$v0, $v0, $t3	# Increment $v0 by last digit of $t0
+					# (1 if it was a 1, 0 if it was a 0).
+		srl	$t0, $t0, 1	# In preparation for next loop iteration,
+					# shift remaining digits of $t0 right 1.
+		addi	$t1, $t1, 1	# Increment counter.
+		j leftHalfOnes_loop	# Loop.
+		
+rightHalfZeros: # Returns the number of 0s in the right half of argument $a0.
+	
+	not	$t0, $a0	# $t0 = $a0 with all bits inverted
+				# (now we want to count 1s in the right half of $t0)
+	li	$t1, 0		# $t1 = counter for looping through right 16 digits of $t0
+	li	$v0, 0		# $v0 = number of 1s counted so far
+	
+	rightHalfZeros_loop:	# Loops through right 16 digits of $t0,
+				# which match the left 16 digits of $a0.
+				# For each digit, increments $v0 if it's 1.
+		beq	$t1, 16, return	# Return when counter reaches 16
+		
+		andi	$t3, $t0, 1	# $t3 = last (binary) digit of $t0
+		add	$v0, $v0, $t3	# Increment $v0 by last digit of $t0
+					# (1 if it was a 1, 0 if it was a 0).
+		srl	$t0, $t0, 1	# In preparation for next loop iteration,
+					# shift remaining digits of $t0 right 1.
+		addi	$t1, $t1, 1	# Increment counter.
+		j rightHalfZeros_loop	# Loop.
+				
+powerOfTwo:	# Returns the highest power of 2 that evenly divides argument $a0.
+	# (If $a0 = 8, it will return 3 because 2^3 is the largest power of 2 factor.)
+	# To do this, it's critical to understand that shifting a binary number right
+	# divides it by 2 and shifting it left multiplies it by 2. Algorithm:
+	# result = 1
+	# while rightmost bit of argument is not 1:
+	#	divide argument by 2
+	#	increment result by 1
+	# return result
+	
+	move	$t0, $a0	# $t0 = argument (better to avoid changing $a0)
+	li	$v0, 0		# $v0 = result = 0 so far (all integers divisible by 2^0 = 1)
+	
+	powerOfTwo_loop:
+		and	$t1, $t0, 1	# $t1 = rightmost bit of argument $t0
+		beq	$t1, 1, return	# If rightmost bit of argument is 1, return result
+		
+		srl	$t0, $t0, 1	# Otherwise, divide argument by 2
+		addi	$v0, $v0, 1	# Increment result by 2
+		j powerOfTwo_loop	# Loop
+
+smallestDigit:	# Returns the smallest digit in the decimal representation of the number entered.
+	
+	move	$t0, $a0	# $t0 = argument
+	li	$t1, 10		# $t1 = base we're working with
+	li	$v0, 9		# $v0 = minimum digit found so far (start at max digit possible)
+	
+	smallestDigit_loop:	# Goes through decimal places until $t0 > $t0, then returns.
+		beqz	$t0, return	# Return $t0 reaches 0
+		
+		divu	$t0, $t1	# lo and hi contain results of dividing $t0 by 10
+		mflo	$t0		# Replace $t0 with $t0/10 (essentially remove last digit)
+		mfhi	$t2		# $t2 = remainder from that division = digit we're currently checking
+					# (if arg was 16 and we're checking 1s, we get 16 % 10 = 6).
+		ble	$v0, $t2, smallestDigit_loop	# If $v0 <= current digit, we haven't found a smaller digit. Loop.
+		move	$v0, $t2	# Otherwise we have found a smaller digit. Replace $v0 with $t2.
+		j smallestDigit_loop	# Go to next iteration of loop.
+		
+return: # Returns to last calling function (jumps to address $ra)
+	jr	$ra
+	
+exit:	# Exits program
+	li	$v0, 10
+	syscall
