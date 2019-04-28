@@ -3906,7 +3906,7 @@ Annotations to know
     - @WebService
     - @WebMethod
   * Spring
-- @Autowired
+    - @Autowired
     - @Bean
     - @Transactional
     - @Scope
@@ -3923,7 +3923,6 @@ Annotations to know
       * @ModelAttribute
       * @SessionAttributes
       * @RequestBody/@ResponseBody
-
     - AOP
       * @Aspect
       * @Around
