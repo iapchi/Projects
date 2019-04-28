@@ -3604,29 +3604,53 @@ Forked from Sun's Hudson project after it was acquired by Oracle, Jenkins is a p
 ## WSDL
   Web Services Description Language
     XML-based file which basically tells the client application the web services description
+
     Tags (The Pizza Man Put On Big Shoes)
+
     Definition
+
       root element of all WSDL documents
+
         defines name of the web service
+
     Types
+
       defines the XML schema data types used by web service
+
     Port
+
       specifies single endpoint for binding, one communication endpoint
+
     Message
+
       abstract definition of the data, contains data elements for each operation
+
     PortType
+
       abstract set of operations that can be performed and the messages involved
+
         "interface"
+
     Operation
+
       abstract definition of what actions are available
+
         "method"
+
     Binding
+
       defines the protocol and data format for each PortType
+
         Remote Procedure Call/Encoded
+
         Remote Procedure Call/Literal
+
         Document/Encoded
+
         Document/Literal
+
     Service
+    
       defines the (URL) location supported by the web service
     
 
@@ -3636,30 +3660,44 @@ Forked from Sun's Hudson project after it was acquired by Oracle, Jenkins is a p
 
 ## REST
   Representational State Transfer (Architecture style that defines a set of constraints to be used for creating web services)
+
     Used to build Web Services that are lightweight, maintainable, and scalable in nature
+
     The architecture is client/server, stateless, layered, and supports caching
+
     Principles of REST
-      resource
+
+      Resource
+
         is any object the API can provide information on. Each resource has a unique identifier. The ifentified can be a name or a number
-      representation
+
+      Representation
+
         JSON, XML, or some other transferred data representation of the resource 
-      messages
+
+      Messages
+
         the use of explicit HTTP methods
+
     RESTful service
+
       service built on REST architecture
-       Uniform Interface
+
+        Uniform Interface
+
           similiar approach for other API (GET/PUT/POST/DELETE operations)
+
         Client-Server independence
+
         Stateless
+
          server does not keep track of prior requests(sessions)
-       Cacheable
+
+        Cacheable
+
         Layered System
+
         Code on demand
-  Methods 
-    GET: retrieve an object, idempotent/safe 
-    PUT: update/replace an object, idempotent 
-    POST: create an object, not idempotent 
-    DELETE: delete an object, idempotent 
 
 ## Differences between SOAP & REST
   *Security - SOAP has built in security; REST has only HTTPS 
@@ -3673,19 +3711,31 @@ Forked from Sun's Hudson project after it was acquired by Oracle, Jenkins is a p
 
 ## When to use REST/SOAP
   Use REST
+
     Limited resources and bandwidth
+
     Statelessness 
+
       no need to maintain a state of infomation from one request to another
+
     Caching
+
     Ease of coding
+
       REST services and subsequent implementation is far easier than SOAP
 
   Use SOAP
+
     Asynchronous processing and subsequent invocation
+
       there is a requirement that the client needs a guaranteed level of reliability and security
+
     Formal means of communication
+
       Both client and server have an agreement on the exchange format
+
     Stateful operations
+
       Application has a requirement that state needs to be maintained from one request to another
 
 # Microservices
@@ -3707,22 +3757,28 @@ Forked from Sun's Hudson project after it was acquired by Oracle, Jenkins is a p
   Work well with containers such as Docker
 
   Better fault isolation
+
     if one microservice fails, the other will continue to work
   
   Handling traffic well 
+
     instances of services created as needed
 
   Loose coupling 
+
     Less dependency on each other
 
 # Any disadvantage in using microservices.
   DevOps complexity
+
     Due to several moving parts of the application. It becomes complex.
 
   Increased Resource use 
+
     Initial investment to run these applications are high because all the independently running components need their own containers
 
   Ease overhead
+
     people need to communicate to make sure update doesn’t occur error on other services, Cost to monitor each individual service
 
   Databases are more difficult to keep normalized
@@ -3732,6 +3788,7 @@ Forked from Sun's Hudson project after it was acquired by Oracle, Jenkins is a p
 
 ## what is a circuit breaker? how does it work
   Circuit breaker is a pattern that helps prevent catastrophic cascading failure across multiple systems. The concept there is a protected function call in a circuit breaker object, which monitors for failures. Upon failure the circuit breaker trips and all further calls to the circuit breaker return with an error, all of this is done without involving the protected call being made. There are three states of a circuit breaker:
+
     Closed
       Everything is normal, circuit breaker remains in the closed state and all calls pass through to the services
 
@@ -3740,6 +3797,7 @@ Forked from Sun's Hudson project after it was acquired by Oracle, Jenkins is a p
 
     Half-Open
       After a timeout period, the circuit switches to half-open to test if the underlying problem still occurs. If a single call fails it will then go back to the Open state, if it succeeds it will then head to the closed state.
+
   Circuit breaker is a great tool for ensuring service availability
 
 
@@ -3747,13 +3805,16 @@ Forked from Sun's Hudson project after it was acquired by Oracle, Jenkins is a p
   *Eureka is a service discovery pattern implementation
   *Microservice is registered in the server
   *Client microservice looks up the server to get dependent microservice
+
 Eureka is a REST (Representational State Transfer) based service that is primarily used in the AWS cloud for locating services for the purpose of load balancing and failover of middle-tier servers.
+
 Annotations: `@EnableDiscoveryClient` / `@EnableEurekaClient @EnableEurekaServer`
 
 # Zuul
 Edge/Gateway service that proxies requests to multiple backing services, providing dynamic routing, monitoring, resiliency, security and more.
 
 Receives all incoming requests and delegates requests to internal micro-services through the Eureka Server.
+
 Annotations: `@EmableZuulProxy`
 
 # Spring Cloud Config Servers
@@ -3806,12 +3867,17 @@ defines the tx scope (also called *tx attributes*)
 - 500-599: Server Error
 
 # HTTP Methods (Verbs)
+
   Idempotent - no side effects if identical request made multiple times
+
   Safe - read-only operation, doesn't alter the state of the server
+
   - GET: retrieves information, sends info in the URL itself, empty body >localhost:8080/ExampleContext/example?name="bob"
   - HEAD: Requests the headers that are returned if the specified resource would be requested with an HTTP GET method
   - OPTIONS: Describes the communication options for the target resource
+
     Not Safe, but Idempotent
+
       - PUT: Send data to a server to create/update a resource
       - DELETE: Deletes the specified resource
   Not Idempotent
