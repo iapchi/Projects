@@ -200,7 +200,6 @@ var x = 0.3 - 0.2; // does not equal 0.1
 * *null* is a value that is not anything
 * *undefined* is not even that...
 
-<br/>
 
 * You can assign a value to be null
 * *undefined* is the default value for variables, parameters, nonexistent members, etc.
@@ -877,10 +876,8 @@ var someFn = function() {
 * assume we are using bubble and I want the event handler to run for `div`, but not for `body`
   * this is where `event.stopPropagation()` comes in handy
 
-<br/><br/>
 * example - putting it all together
   * put in HTML section of JSFiddle
-<br/>
 
 * CSS
 
@@ -2350,7 +2347,7 @@ The JVM can connect to sources of data that exist outside itself, from files on 
 # Marshaling
 * convert object to language agnostic data format: xml, json, yaml, ...
 
-#Servlet 
+# Servlet 
 HTTP/HTML
 Hypertext Transfer Protocol & Hypertext Markup Language, the two main technologies for a web browser. HTML provides a structure for static content on web pages. HTML documents are organized by element tags, some with attributes. Browsers don't display the element tags, but instead parse them to render content.
 
@@ -2542,7 +2539,7 @@ printWriter.write("<p>this seems like a neat way of doing things</p>");
 * `JSESSIONID` is a cookie that holds a user's unique session id
 
 
-#Angular
+# Angular
 
 A framework for building client applications in HTML, CSS, and JavaScript/TypeScript, MVC design pattern, SPA (Single Page Application).
 
@@ -2818,7 +2815,7 @@ In nG, there are a few ways to apply styles to a component:
 
 The styles that are applied are those that come *last* in the component's metadata.
 
-#Promise and an observable?
+# Promise and an observable?
     ○ Observables do not execute until subscription, while promises execute upon creation.
     ○ Observables are cancellable, while Promises are not.
     ○ Promises return only one value and observables return many.
@@ -3297,10 +3294,9 @@ public class BusinessLogicImpl implements BusinessLogic {
 ## Transactions
 `@Transactional` indicates that a persistence method takes place in a transactional context (i.e. on DAO methods)
 
-<br>
 
 ### Transaction Propagation <hr>
-<br>
+
 #### REQUIRED
 `@Transactional(propagation=Propagation.REQUIRED)`
 - same physical transaction will be used if one already exists, otherwise a new transaction will be opened
