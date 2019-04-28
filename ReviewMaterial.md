@@ -2190,6 +2190,22 @@ cs.execute();
     * ordered => preserves the order in which inserted
     * duplicate entries allowed
     * elements accessed by index
+    The main methods in List interface:
+
+    (1)public abstract boolean add(Object obj)
+      Adds the specified element to this set if it is not already present.
+
+    (2)public abstract void clear()
+      Removes all of the elements from this collection.
+
+    (3)public abstract boolean equals(Object obj)
+      Compares the specified object with this collection for equality.
+
+    (4)public abstract Iterator iterator()
+      Returns an iterator over the elements in collection.
+
+    (5)public abstract boolean remove(Object obj)
+     Removes a single instance of the specified element from collection.
 
 ### ```ArrayList<E> implements List<E>```
     * resizable array
@@ -2211,6 +2227,23 @@ cs.execute();
     * NOT index driven
     * Unique elements allowed only
     * DOES NOT preserve the order in which they were inserted
+    The main methods in Set interface:
+
+    (1)public abstract boolean add(Object obj)
+      Adds the specified element to this set if it is not already present.
+
+    (2)public abstract void clear()
+      Removes all of the elements from this collection.
+
+    (3)public abstract boolean equals(Object obj)
+      Compares the specified object with this collection for equality.
+
+    (4)public abstract Iterator iterator()
+      Returns an iterator over the elements in collection.
+
+    (5)public abstract boolean remove(Object obj)
+     Removes a single instance of the specified element from collection.
+
 
 ### ```HashSet<E> implements Set<E>```
     * Backed by a HashMap<K, V>
@@ -2249,6 +2282,26 @@ cs.execute();
 ## ```Map<K, V>``` Interface
     * Used to identify a value by a key, each element in a map is a Key-Value pair
     * NOTE: Map does not implement the Collection interface, however it is considered to be part of the Collections framework
+    The main methods in Map interface:
+
+    (1)public abstract int size()
+    Returns the number of key-value mappings in this map.
+
+    (2)public abstract boolean containsKey(Object obj)
+    Returns true if this map contains a mapping for the specified key.
+
+    (3)public abstract boolean containsValue(Object obj)
+    Returns true if this map maps one or more keys to the specified value.
+
+    (4)public abstract Object get(Object obj)
+    Returns the value to which this map maps the specified key.
+
+    (5)public abstract Object remove(Object obj)
+     Removes the mapping for this key from this map if it is present.
+
+    (6)public abstract Set keySet()
+     Returns a set view of the keys contained in this map.
+
 
 ### ```HashMap<K,V> implements Map<K,V>```
     * Stores elements in key-value pairs
