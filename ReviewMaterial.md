@@ -3564,7 +3564,7 @@ Forked from Sun's Hudson project after it was acquired by Oracle, Jenkins is a p
   Simple Object Access Protocol
     XML-based protocol for exchanging information working with HTTP protocol
     Only communicates through GET/POST requests
-  Server-Server
+      Server-Server
 
     XML contains 
       Envelope element
@@ -3604,7 +3604,7 @@ Forked from Sun's Hudson project after it was acquired by Oracle, Jenkins is a p
 ## WSDL
   Web Services Description Language
     XML-based file which basically tells the client application the web services description
-  Tags (The Pizza Man Put On Big Shoes)
+    Tags (The Pizza Man Put On Big Shoes)
     Definition
       root element of all WSDL documents
         defines name of the web service
@@ -3637,24 +3637,24 @@ Forked from Sun's Hudson project after it was acquired by Oracle, Jenkins is a p
 ## REST
   Representational State Transfer (Architecture style that defines a set of constraints to be used for creating web services)
     Used to build Web Services that are lightweight, maintainable, and scalable in nature
-  The architecture is client/server, stateless, layered, and supports caching
-  Principles of REST
-    resource
-      is any object the API can provide information on. Each resource has a unique identifier. The ifentified can be a name or a number
-    representation
-      JSON, XML, or some other transferred data representation of the resource 
-    messages
-      the use of explicit HTTP methods
-  RESTful service
-    service built on REST architecture
-      Uniform Interface
-        similiar approach for other API (GET/PUT/POST/DELETE operations)
-      Client-Server independence
-      Stateless
-        server does not keep track of prior requests(sessions)
-      Cacheable
-      Layered System
-      Code on demand
+    The architecture is client/server, stateless, layered, and supports caching
+    Principles of REST
+      resource
+        is any object the API can provide information on. Each resource has a unique identifier. The ifentified can be a name or a number
+      representation
+        JSON, XML, or some other transferred data representation of the resource 
+      messages
+        the use of explicit HTTP methods
+    RESTful service
+      service built on REST architecture
+       Uniform Interface
+          similiar approach for other API (GET/PUT/POST/DELETE operations)
+        Client-Server independence
+        Stateless
+         server does not keep track of prior requests(sessions)
+       Cacheable
+        Layered System
+        Code on demand
   Methods 
     GET: retrieve an object, idempotent/safe 
     PUT: update/replace an object, idempotent 
@@ -3662,14 +3662,14 @@ Forked from Sun's Hudson project after it was acquired by Oracle, Jenkins is a p
     DELETE: delete an object, idempotent 
 
 ## Differences between SOAP & REST
-  Security - SOAP has built in security; REST has only HTTPS 
-  Protocol - SOAP can use almost any protocol; REST can only use HTTP and HTTPS 
-  Atomicity - SOAP has built in transactions; REST does not perform atomic transactions, just represents state 
-  Contract - SOAP is contract-based (WSDL); REST is not (but could be with a WADL) 
-  Exception handling - SOAP has built in exception handling; REST needs external exception handling (i.e. Spring) 
-  Tools - SOAP uses Apache-CXF(Apache crossfire); REST is tool-less 
-  Message - SOAP uses only XML; REST allows JSON, XML, and other media types.
-  Bandwidth - SOAP requires more bandwidth for its usage; REST does not need much bandwidth when requests are sent to the server
+  *Security - SOAP has built in security; REST has only HTTPS 
+  *Protocol - SOAP can use almost any protocol; REST can only use HTTP and HTTPS 
+  *Atomicity - SOAP has built in transactions; REST does not perform atomic transactions, just represents state 
+  *Contract - SOAP is contract-based (WSDL); REST is not (but could be with a WADL) 
+  *Exception handling - SOAP has built in exception handling; REST needs external exception handling (i.e. Spring) 
+  *Tools - SOAP uses Apache-CXF(Apache crossfire); REST is tool-less 
+  *Message - SOAP uses only XML; REST allows JSON, XML, and other media types.
+  *Bandwidth - SOAP requires more bandwidth for its usage; REST does not need much bandwidth when requests are sent to the server
 
 ## When to use REST/SOAP
   Use REST
