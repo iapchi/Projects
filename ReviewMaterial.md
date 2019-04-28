@@ -1420,18 +1420,6 @@ in order from least restrictive to most restrictive
 * non-repeatable read
 * phantom read
 
-# Tx Propagations
-
-defines the tx scope (also called *tx attributes*)
-* Required - Supports a current transaction; creates a new one if none exists.
-* Requires_new - Creates a new transaction, suspending the current transaction if one exists.
-* Supports - Supports a current transaction; executes non-transactionally if none exists.
-* Not_supported - Does not support a current transaction; rather always execute nontransactionally.
-* Mandatory - Supports a current transaction; throws an exception if no current transaction exists.
-* Never - Does not support a current transaction; throws an exception if a current transaction exists.
-* Timeout_default - Uses the default timeout of the underlying transaction system, or none if timeouts are not supported.
-* Nested - Executes within a nested transaction if a current transaction exists.
-
 # Java
 Java is an object-oriented programming language and a platform developed by Sun Microsystems (eaten by Oracle). Using the principle of **WORA** (Write Once, Run Anywhere), a Java application can be compiled and executed on any platform supported by Java. Flexible, popular, and well-supported, Java has helps developers write scalable client-server web applications, desktop and mobile applications, and frameworks and libraries.
 
@@ -3418,7 +3406,7 @@ execution(* com.example.service.EventService.play*(..))
 * `@AfterThrowing`
 * `@Around`
 
-#Spring Data  (Own Project)
+# Spring Data  (Own Project)
 
 Spring Data’s mission is to provide a familiar and consistent, Spring-based programming model for data access while still retaining the special traits of the underlying data store.
 
@@ -3472,7 +3460,7 @@ Spring Boot web applications, however, can also be built as wars and deployed to
 
 
 
-#DevOps
+# DevOps
 * Automated Testing
 * Continuous Integration
 * Continuous Delivery
@@ -3543,12 +3531,11 @@ This policy allows access to all files in the bucket named 'your-bucket-name'.
 # Jenkins
 Forked from Sun's Hudson project after it was acquired by Oracle, Jenkins is a popular open-source CI/CD tool used throughout the industry to create and manage build pipelines. Jenkins is distributed as a Java `war` package and can be deployed to a Tomcat server or run as a self-executing `war`. The Jenkins dashboard is then accessible through a web application.
 
-#Web services
+# Web services
   any piece of software that makes itself available over the internet and uses a messaging system(standardized xml messaging system at the very least)
-
   Self contained, modular, distributed, dynamic applications that can be described, published, located, or invoked over the network to create products, processes, and supply chains. These applications can be local, distributed, or web-based.
 
-##SOA
+## SOA
   Service Oriented Architecture
     Architectural pattern in computer software design in which application components provide services to other components via a communication protocol such as a network.
     
@@ -3573,7 +3560,7 @@ Forked from Sun's Hudson project after it was acquired by Oracle, Jenkins is a p
         Use standards that allow diverse subscribers to use the service
 
 
-##SOAP
+## SOAP
   Simple Object Access Protocol
     XML-based protocol for exchanging information working with HTTP protocol
     Only communicates through GET/POST requests
@@ -3614,7 +3601,7 @@ Forked from Sun's Hudson project after it was acquired by Oracle, Jenkins is a p
       Send the message
 
 
-##WSDL
+## WSDL
   Web Services Description Language
     XML-based file which basically tells the client application the web services description
   Tags (The Pizza Man Put On Big Shoes)
@@ -3647,7 +3634,7 @@ Forked from Sun's Hudson project after it was acquired by Oracle, Jenkins is a p
 
   Normally consists of a message, for each web method there are two messages, input output together they form an operation
 
-##REST
+## REST
   Representational State Transfer (Architecture style that defines a set of constraints to be used for creating web services)
     Used to build Web Services that are lightweight, maintainable, and scalable in nature
   The architecture is client/server, stateless, layered, and supports caching
@@ -3674,7 +3661,7 @@ Forked from Sun's Hudson project after it was acquired by Oracle, Jenkins is a p
     POST: create an object, not idempotent 
     DELETE: delete an object, idempotent 
 
-##Differences between SOAP & REST
+## Differences between SOAP & REST
   Security - SOAP has built in security; REST has only HTTPS 
   Protocol - SOAP can use almost any protocol; REST can only use HTTP and HTTPS 
   Atomicity - SOAP has built in transactions; REST does not perform atomic transactions, just represents state 
@@ -3684,7 +3671,7 @@ Forked from Sun's Hudson project after it was acquired by Oracle, Jenkins is a p
   Message - SOAP uses only XML; REST allows JSON, XML, and other media types.
   Bandwidth - SOAP requires more bandwidth for its usage; REST does not need much bandwidth when requests are sent to the server
 
-##When to use REST/SOAP
+## When to use REST/SOAP
   Use REST
     Limited resources and bandwidth
     Statelessness 
@@ -3701,16 +3688,16 @@ Forked from Sun's Hudson project after it was acquired by Oracle, Jenkins is a p
     Stateful operations
       Application has a requirement that state needs to be maintained from one request to another
 
-#Microservices
+# Microservices
   A service oriented architecture pattern wherein applications are built as a collection of various smallest independent service units. Approach to decompose an application into single-function modules with well-defined interfaces. These modeules can be independently deployed and operated by small teams.
 
   Stateless
   Stateful
 
-##Monolithic App
+## Monolithic App
   built as a single container unit application which all the software components of an application are clubbed into a single package
 
-#Main advantages of using microservices.
+# Main advantages of using microservices.
   Services are independently deployable and scalable
 
   It allows for different services to be written in different programming languages.
@@ -3728,7 +3715,7 @@ Forked from Sun's Hudson project after it was acquired by Oracle, Jenkins is a p
   Loose coupling 
     Less dependency on each other
 
-#Any disadvantage in using microservices.
+# Any disadvantage in using microservices.
   DevOps complexity
     Due to several moving parts of the application. It becomes complex.
 
@@ -3740,10 +3727,10 @@ Forked from Sun's Hudson project after it was acquired by Oracle, Jenkins is a p
 
   Databases are more difficult to keep normalized
 
-##what is a messaging queue? how do they work?
+## what is a messaging queue? how do they work?
   A messaging queue is a software component used for passing messages between services that are tightly coupled as services themselves cooperate  with other services. Messages are persisted as with microservices failues are isolated. Messageing queues work by facilitating asynchronous communication between discrete services. Where Messages are stored on the queue until they are processed and deleted. Each message is processed only once, by a single consumer and this operation is decoupled. Message queues can be used to decouple heavyweight processing, to buffer or batch work, and to smooth spiky workloads.
 
-##what is a circuit breaker? how does it work
+## what is a circuit breaker? how does it work
   Circuit breaker is a pattern that helps prevent catastrophic cascading failure across multiple systems. The concept there is a protected function call in a circuit breaker object, which monitors for failures. Upon failure the circuit breaker trips and all further calls to the circuit breaker return with an error, all of this is done without involving the protected call being made. There are three states of a circuit breaker:
     Closed
       Everything is normal, circuit breaker remains in the closed state and all calls pass through to the services
@@ -3756,14 +3743,14 @@ Forked from Sun's Hudson project after it was acquired by Oracle, Jenkins is a p
   Circuit breaker is a great tool for ensuring service availability
 
 
-#Eureka
+# Eureka
   *Eureka is a service discovery pattern implementation
   *Microservice is registered in the server
   *Client microservice looks up the server to get dependent microservice
 Eureka is a REST (Representational State Transfer) based service that is primarily used in the AWS cloud for locating services for the purpose of load balancing and failover of middle-tier servers.
 Annotations: `@EnableDiscoveryClient` / `@EnableEurekaClient @EnableEurekaServer`
 
-#Zuul
+# Zuul
 Edge/Gateway service that proxies requests to multiple backing services, providing dynamic routing, monitoring, resiliency, security and more.
 
 Receives all incoming requests and delegates requests to internal micro-services through the Eureka Server.
@@ -3798,6 +3785,18 @@ Annotations: `@EmableZuulProxy`
 * Use fallbacks when failures occur to keep app running
 
 * Provide fallback logic with HystrixCommand.getFallback() which returns a single fallback value. `@HystrixCommand`
+
+# Tx Propagations
+
+defines the tx scope (also called *tx attributes*)
+* Required - Supports a current transaction; creates a new one if none exists.
+* Requires_new - Creates a new transaction, suspending the current transaction if one exists.
+* Supports - Supports a current transaction; executes non-transactionally if none exists.
+* Not_supported - Does not support a current transaction; rather always execute nontransactionally.
+* Mandatory - Supports a current transaction; throws an exception if no current transaction exists.
+* Never - Does not support a current transaction; throws an exception if a current transaction exists.
+* Timeout_default - Uses the default timeout of the underlying transaction system, or none if timeouts are not supported.
+* Nested - Executes within a nested transaction if a current transaction exists.
 
 # HTTP Status Codes
 - 100-199: INFO
