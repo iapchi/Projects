@@ -3706,14 +3706,14 @@ Forked from Sun's Hudson project after it was acquired by Oracle, Jenkins is a p
         Code on demand
 
 ## Differences between SOAP & REST
-  *Security - SOAP has built in security; REST has only HTTPS 
-  *Protocol - SOAP can use almost any protocol; REST can only use HTTP and HTTPS 
-  *Atomicity - SOAP has built in transactions; REST does not perform atomic transactions, just represents state 
-  *Contract - SOAP is contract-based (WSDL); REST is not (but could be with a WADL) 
-  *Exception handling - SOAP has built in exception handling; REST needs external exception handling (i.e. Spring) 
-  *Tools - SOAP uses Apache-CXF(Apache crossfire); REST is tool-less 
-  *Message - SOAP uses only XML; REST allows JSON, XML, and other media types.
-  *Bandwidth - SOAP requires more bandwidth for its usage; REST does not need much bandwidth when requests are sent to the server
+  * Security - SOAP has built in security; REST has only HTTPS 
+  * Protocol - SOAP can use almost any protocol; REST can only use HTTP and HTTPS 
+  * Atomicity - SOAP has built in transactions; REST does not perform atomic transactions, just represents state 
+  * Contract - SOAP is contract-based (WSDL); REST is not (but could be with a WADL) 
+  * Exception handling - SOAP has built in exception handling; REST needs external exception handling (i.e. Spring) 
+  * Tools - SOAP uses Apache-CXF(Apache crossfire); REST is tool-less 
+  * Message - SOAP uses only XML; REST allows JSON, XML, and other media types.
+  * Bandwidth - SOAP requires more bandwidth for its usage; REST does not need much bandwidth when requests are sent to the server
 
 ## When to use REST/SOAP
   Use REST
