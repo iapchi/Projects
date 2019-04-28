@@ -3437,9 +3437,13 @@ Spring Boot approaches projects with a biased view of the dependencies on your c
 ### Benefits of using Spring Boot
 Auto-configuration
 The most glaring perk of using Spring Boot is the auto-configuration mechanism which is enabled by the annotation 
+
 `@SpringBootApplication` is used to enable those three features:
+
 `@EnableAutoConfiguration` enable Spring Boot’s auto-configuration mechanism
+
 `@ComponentScan` enable @Component scan on the package where the application is located 
+
 `@Configuration` allow to register extra beans in the context or import additional configuration classes
 
 
@@ -3533,7 +3537,9 @@ Forked from Sun's Hudson project after it was acquired by Oracle, Jenkins is a p
 
 # Web services
   any piece of software that makes itself available over the internet and uses a messaging system(standardized xml messaging system at the very least)
-  Self contained, modular, distributed, dynamic applications that can be described, published, located, or invoked over the network to create products, processes, and supply chains. These applications can be local, distributed, or web-based.
+
+  Self contained, modular, distributed, dynamic applications that can be described, published, located, or invoked over the network to create products, processes, and supply 
+  chains. These applications can be local, distributed, or web-based.
 
 ## SOA
   Service Oriented Architecture
@@ -3650,7 +3656,7 @@ Forked from Sun's Hudson project after it was acquired by Oracle, Jenkins is a p
         Document/Literal
 
     Service
-    
+
       defines the (URL) location supported by the web service
     
 
